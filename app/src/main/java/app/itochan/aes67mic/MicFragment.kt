@@ -28,9 +28,12 @@ class MicFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.micLiveData.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(binding.micButton, "clicked", Snackbar.LENGTH_SHORT)
-                .show()
+        viewModel.recordingStatus.observe(viewLifecycleOwner, Observer {
+            val text = when (it!!) {
+                MicViewModel.Status.STARTED -> "Started"
+                MicViewModel.Status.STOPPED -> "Stopped"
+            }
+            Snackbar.make(binding.micButton, text, Snackbar.LENGTH_SHORT).show()
         })
     }
 }
