@@ -1,4 +1,4 @@
-package app.itochan.aes67mic
+package app.itochan.aes67
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar

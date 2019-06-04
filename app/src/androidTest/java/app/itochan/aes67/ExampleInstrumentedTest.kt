@@ -1,4 +1,4 @@
-package app.itochan.aes67mic
+package app.itochan.aes67
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("app.itochan.aes67mic", appContext.packageName)
+        assertEquals("app.itochan.aes67", appContext.packageName)
     }
 }
