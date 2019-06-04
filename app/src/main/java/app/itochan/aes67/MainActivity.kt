@@ -1,9 +1,9 @@
 package app.itochan.aes67
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,20 +11,16 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_home -> {
-                    textMessage.setText(R.string.title_home)
-                    return@OnNavigationItemSelectedListener true
+                R.id.navigation_receiver -> {
+                    textMessage.setText(R.string.title_receiver)
+                    true
                 }
-                R.id.navigation_dashboard -> {
-                    textMessage.setText(R.string.title_dashboard)
-                    return@OnNavigationItemSelectedListener true
+                R.id.navigation_transmitter -> {
+                    textMessage.setText(R.string.title_transmitter)
+                    true
                 }
-                R.id.navigation_notifications -> {
-                    textMessage.setText(R.string.title_notifications)
-                    return@OnNavigationItemSelectedListener true
-                }
+                else -> false
             }
-            false
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
