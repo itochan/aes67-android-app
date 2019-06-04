@@ -1,4 +1,4 @@
-package app.itochan.aes67mic
+package app.itochan.aes67
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle

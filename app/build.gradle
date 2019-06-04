@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "app.itochan.aes67mic"
+        applicationId "app.itochan.aes67"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
