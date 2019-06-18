@@ -10,7 +10,10 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.net.*
+import java.net.DatagramPacket
+import java.net.InetAddress
+import java.net.MulticastSocket
+import java.net.SocketException
 
 
 class ReceiverViewModel(application: Application) : AndroidViewModel(application),
@@ -47,12 +50,12 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
             .setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             )
             .setAudioFormat(
                 AudioFormat.Builder()
-                    .setEncoding(AudioFormat.ENCODING_PCM_FLOAT)
+                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
                     .setSampleRate(SAMPLING_RATE)
                     .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
                     .build()
@@ -67,11 +70,14 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
         receiverJob = viewModelScope.launch(Dispatchers.Default) {
             audioTrack.play()
             try {
+                val buf24 = ByteArray(PACKET_LENGTH)
                 while (true) {
-                    val buf = ByteArray(PACKET_LENGTH)
-                    val recv = DatagramPacket(buf, buf.size)
+                    val recv = DatagramPacket(buf24, buf24.size)
                     socket.receive(recv)
-                    audioTrack.write(buf, 0, PACKET_LENGTH)
+                    val buf16 = ByteArray(BUFFER_16BIT_SIZE) {
+                        buf24[it + (it / 2) + PAYLOAD_OFFSET]
+                    }
+                    audioTrack.write(buf16, 0, BUFFER_16BIT_SIZE)
                 }
             } catch (e: SocketException) {
             }
@@ -92,6 +98,8 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
         private const val MULTICAST_ADDRESS = "239.69.128.165"
         private const val AES67_PORT = 5004
         private const val SAMPLING_RATE = 48000
-        private const val PACKET_LENGTH = SAMPLING_RATE * 2
+        private const val PACKET_LENGTH = 300
+        private const val PAYLOAD_OFFSET = 12
+        private const val BUFFER_16BIT_SIZE = ((PACKET_LENGTH - PAYLOAD_OFFSET) / 1.5).toInt()
     }
 }
