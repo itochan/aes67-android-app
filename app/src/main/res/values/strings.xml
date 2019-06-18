@@ -4,4 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_receiver">Receiver</string>
     <string name="title_transmitter">Transmitter</string>
+    <string name="multicast_address">Multicast Address: %s</string>
+    <string name="remote_address">Remote Address: %s</string>
 </resources>

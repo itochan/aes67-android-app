@@ -19,6 +19,9 @@ import java.net.SocketException
 class ReceiverViewModel(application: Application) : AndroidViewModel(application),
     LifecycleObserver {
 
+    val multicastAddress = MutableLiveData<String>()
+    val remoteAddress = MutableLiveData<String>()
+
     private lateinit var multicastLock: WifiManager.MulticastLock
     private lateinit var socket: MulticastSocket
     private lateinit var group: InetAddress
@@ -66,6 +69,7 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
             group = InetAddress.getByName(MULTICAST_ADDRESS)
             joinGroup(group)
         }
+        multicastAddress.value = MULTICAST_ADDRESS
 
         receiverJob = viewModelScope.launch(Dispatchers.Default) {
             audioTrack.play()
@@ -74,6 +78,8 @@ class ReceiverViewModel(application: Application) : AndroidViewModel(application
                 while (true) {
                     val recv = DatagramPacket(buf24, buf24.size)
                     socket.receive(recv)
+                    remoteAddress.postValue(recv.address.hostAddress)
+
                     val buf16 = ByteArray(BUFFER_16BIT_SIZE) {
                         buf24[it + (it / 2) + PAYLOAD_OFFSET]
                     }
